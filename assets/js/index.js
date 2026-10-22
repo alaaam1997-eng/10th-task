@@ -4,6 +4,19 @@ const links = document.querySelectorAll("nav a");
 const tabs = document.querySelectorAll(".portfolio-filter");
 const cards = document.querySelectorAll(".portfolio-item");
 const backToTop = document.querySelector("#scroll-to-top");
+const settingsToggle = document.getElementById("settings-toggle");
+const settingsSidebar = document.getElementById("settings-sidebar");
+const closeSettings = document.getElementById("close-settings");
+const fontOptions = document.querySelectorAll(".font-option");
+const colorsGrid = document.getElementById("theme-colors-grid");
+const resetButton = document.getElementById("reset-settings");
+
+const fontNames = {
+  alexandria: "Alexandria",
+  tajawal: "Tajawal",
+  cairo: "Cairo",
+};
+
 
 // ****************************** light and dark mood *******************************
 modeBtn.addEventListener("click", function () {
@@ -126,9 +139,6 @@ backToTop.addEventListener("click", function () {
   });
 });
 //************************************ side bar ****************************
-var settingsToggle = document.getElementById("settings-toggle");
-var settingsSidebar = document.getElementById("settings-sidebar");
-var closeSettings = document.getElementById("close-settings");
 
 settingsToggle.addEventListener("click", function () {
   settingsSidebar.classList.remove("translate-x-full");
@@ -144,21 +154,14 @@ closeSettings.addEventListener("click", function () {
   settingsSidebar.setAttribute("aria-hidden", "true");
   settingsToggle.setAttribute("aria-expanded", "false");
 });
-var fontOptions = document.querySelectorAll(".font-option");
 
-var fontNames = {
-  alexandria: "Alexandria",
-  tajawal: "Tajawal",
-  cairo: "Cairo",
-};
-
-for (var i = 0; i < fontOptions.length; i++) {
+for (let i = 0; i < fontOptions.length; i++) {
   fontOptions[i].addEventListener("click", function () {
-    var selectedFont = this.getAttribute("data-font");
+    let selectedFont = this.getAttribute("data-font");
 
     document.body.style.fontFamily = fontNames[selectedFont];
 
-    for (var j = 0; j < fontOptions.length; j++) {
+    for (let j = 0; j < fontOptions.length; j++) {
       fontOptions[j].classList.remove("active");
 
       fontOptions[j].setAttribute("aria-checked", "false");
@@ -169,21 +172,18 @@ for (var i = 0; i < fontOptions.length; i++) {
     this.setAttribute("aria-checked", "true");
   });
 }
-var colorsGrid = document.getElementById("theme-colors-grid");
 
-var colors = [
+let colors = [
   "#6366f1",
   "#0ea5e9",
   "#10b981",
   "#f59e0b",
   "#ef4444",
   "#ec4899",
-  "#8b5cf6",
-  "#64748b",
 ];
 
-for (var i = 0; i < colors.length; i++) {
-  var colorButton = document.createElement("button");
+for (let i = 0; i < colors.length; i++) {
+  let colorButton = document.createElement("button");
 
   colorButton.type = "button";
   colorButton.style.backgroundColor = colors[i];
@@ -194,27 +194,34 @@ for (var i = 0; i < colors.length; i++) {
   colorButton.setAttribute("aria-label", "اختيار اللون " + colors[i]);
 
   colorButton.addEventListener("click", function () {
-    var selectedColor = this.getAttribute("data-color");
+    let selectedColor = this.getAttribute("data-color");
+    console.log(this.getAttribute("data-color"));
+    
 
     document.documentElement.style.setProperty(
       "--color-primary",
       selectedColor,
     );
+    document.documentElement.style.setProperty(
+      "--color-secondary",
+      selectedColor,
+    );
+    document.documentElement.style.setProperty(
+      "--color-accent",
+      selectedColor,
+    );
+    
   });
 
   colorsGrid.appendChild(colorButton);
 }
-var resetButton = document.getElementById("reset-settings");
 
 resetButton.addEventListener("click", function () {
-  // Reset font
   document.body.style.fontFamily = "Tajawal";
 
-  // Reset theme color
   document.documentElement.style.setProperty("--color-primary", "#6366f1");
 
-  // Reset font selection
-  for (var i = 0; i < fontOptions.length; i++) {
+  for (let i = 0; i < fontOptions.length; i++) {
     fontOptions[i].classList.remove("active");
 
     fontOptions[i].setAttribute("aria-checked", "false");
