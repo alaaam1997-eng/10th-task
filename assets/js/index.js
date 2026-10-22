@@ -7,16 +7,22 @@ const backToTop = document.querySelector("#scroll-to-top");
 const settingsToggle = document.getElementById("settings-toggle");
 const settingsSidebar = document.getElementById("settings-sidebar");
 const closeSettings = document.getElementById("close-settings");
+const resetButton = document.getElementById("reset-settings");
 const fontOptions = document.querySelectorAll(".font-option");
 const colorsGrid = document.getElementById("theme-colors-grid");
-const resetButton = document.getElementById("reset-settings");
-
 const fontNames = {
   alexandria: "Alexandria",
   tajawal: "Tajawal",
   cairo: "Cairo",
 };
-
+const colors = [
+  "#6366f1",
+  "#0ea5e9",
+  "#10b981",
+  "#f59e0b",
+  "#ef4444",
+  "#ec4899",
+];
 
 // ****************************** light and dark mood *******************************
 modeBtn.addEventListener("click", function () {
@@ -142,7 +148,11 @@ backToTop.addEventListener("click", function () {
 
 settingsToggle.addEventListener("click", function () {
   settingsSidebar.classList.remove("translate-x-full");
-  settingsToggle.classList.remove("z-[70]");
+  if (settingsSidebar.classList.contains("translate-x-full")) {
+    settingsToggle.style.right = "0";
+  } else {
+    settingsToggle.style.right = "320px";
+  }
 
   settingsSidebar.setAttribute("aria-hidden", "false");
   settingsToggle.setAttribute("aria-expanded", "true");
@@ -153,6 +163,7 @@ closeSettings.addEventListener("click", function () {
 
   settingsSidebar.setAttribute("aria-hidden", "true");
   settingsToggle.setAttribute("aria-expanded", "false");
+  settingsToggle.style.right = "0";
 });
 
 for (let i = 0; i < fontOptions.length; i++) {
@@ -173,15 +184,6 @@ for (let i = 0; i < fontOptions.length; i++) {
   });
 }
 
-let colors = [
-  "#6366f1",
-  "#0ea5e9",
-  "#10b981",
-  "#f59e0b",
-  "#ef4444",
-  "#ec4899",
-];
-
 for (let i = 0; i < colors.length; i++) {
   let colorButton = document.createElement("button");
 
@@ -196,7 +198,6 @@ for (let i = 0; i < colors.length; i++) {
   colorButton.addEventListener("click", function () {
     let selectedColor = this.getAttribute("data-color");
     console.log(this.getAttribute("data-color"));
-    
 
     document.documentElement.style.setProperty(
       "--color-primary",
@@ -206,11 +207,7 @@ for (let i = 0; i < colors.length; i++) {
       "--color-secondary",
       selectedColor,
     );
-    document.documentElement.style.setProperty(
-      "--color-accent",
-      selectedColor,
-    );
-    
+    document.documentElement.style.setProperty("--color-accent", selectedColor);
   });
 
   colorsGrid.appendChild(colorButton);
@@ -219,8 +216,12 @@ for (let i = 0; i < colors.length; i++) {
 resetButton.addEventListener("click", function () {
   document.body.style.fontFamily = "Tajawal";
 
+  // Reset theme color
   document.documentElement.style.setProperty("--color-primary", "#6366f1");
+  document.documentElement.style.setProperty("--color-secondary", "#8b5cf6");
+  document.documentElement.style.setProperty("--color-accent", "#a855f7");
 
+  // Reset font selection
   for (let i = 0; i < fontOptions.length; i++) {
     fontOptions[i].classList.remove("active");
 
@@ -233,3 +234,5 @@ resetButton.addEventListener("click", function () {
     }
   }
 });
+//***********************carousel ***************************************
+
