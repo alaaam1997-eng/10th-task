@@ -23,6 +23,15 @@ const colors = [
   "#ef4444",
   "#ec4899",
 ];
+const carousel = document.getElementById("testimonials-carousel");
+const nextBtn = document.getElementById("next-testimonial");
+const prevBtn = document.getElementById("prev-testimonial");
+const card = document.querySelectorAll(".testimonial-card");
+
+const indicators = document.querySelectorAll(".carousel-indicator");
+
+// const card = carousel.children;
+
 
 // ****************************** light and dark mood *******************************
 modeBtn.addEventListener("click", function () {
@@ -235,4 +244,54 @@ resetButton.addEventListener("click", function () {
   }
 });
 //***********************carousel ***************************************
+let index = 0;
 
+function updateCarousel() {
+  let cardWidth = card[0].getBoundingClientRect().width;
+  let gap = parseFloat(getComputedStyle(carousel).columnGap) || 0;
+
+  let move = index * (cardWidth + gap);
+
+  carousel.style.transform = "translateX(" + move + "px)";
+
+  for (let i = 0; i < indicators.length; i++) {
+    if (i === index) {
+      indicators[i].classList.add("bg-accent");
+      indicators[i].classList.remove("bg-slate-400", "dark:bg-slate-600");
+      indicators[i].setAttribute("aria-selected", "true");
+    } else {
+      indicators[i].classList.remove("bg-accent");
+      indicators[i].classList.add("bg-slate-400");
+      indicators[i].setAttribute("aria-selected", "false");
+    }
+  }
+}
+
+nextBtn.addEventListener("click", function () {
+  if (index < card.length - 3) {
+    index++;
+  } else {
+    index = 0;
+  }
+
+  updateCarousel();
+});
+
+prevBtn.addEventListener("click", function () {
+  if (index > 0) {
+    index--;
+  } else {
+    index = card.length - 3;
+  }
+
+  updateCarousel();
+});
+
+for (let i = 0; i < indicators.length; i++) {
+  indicators[i].addEventListener("click", function () {
+    index = Number(this.getAttribute("data-index"));
+    updateCarousel();
+  });
+}
+
+window.addEventListener("resize", updateCarousel);
